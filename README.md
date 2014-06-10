@@ -82,7 +82,7 @@ todo
 
 ## 模板扩展
 
-基于 [swig](http://paularmstrong.github.io/swig/) 扩展 html、head、body、style、script、require、uri 等标签，方便组织代码和静态资源引用，自动完成 js、css 优化输出。
+基于 [swig](http://paularmstrong.github.io/swig/) 扩展 html、head、body、style、script、require、uri、widget 等标签，方便组织代码和静态资源引用，自动完成 js、css 优化输出。
 
 layout.html
 
@@ -123,6 +123,44 @@ index.html
 <p>This is just an awesome page.</p>
 {% endblock %}
 ```
+
+### widget 分块
+
+页面中通用且独立的小部分可以通过 widget 分离出来，方便维护。
+
+widget/header/header.html
+
+```tpl
+<div class="header">
+    <ul>
+        <li>nav 1</li>
+        <li>nav 2</li>
+    </ul>
+</div>
+```
+
+page/index.html
+
+```tpl
+{% extends 'layout.html' %}
+
+{% block content %}
+    {% widget "widget/header/header.html" %}
+{% endblock %}
+```
+
+### widget 分类
+
+借鉴了 BigPipe，Quickling 等思路，让 widget 可以以多种模式加载。
+
+1. `sync` 默认就是此模式，直接输出。
+2. `quicking` 此类 widget 在输出时，只会输出个壳子，内容由用户自行决定通过 js，另起请求完成填充，包括静态资源加载。
+3. `async` 此类 widget 在输出时，也只会输出个壳子，但是内容在 body 输出完后，chunk 输出 js 自动填充。widget 将忽略顺序，谁先准备好，谁先输出。
+4. `pipeline` 与 `async` 基本相同，只是它会按顺序输出。
+
+
+
+
 
 
 
