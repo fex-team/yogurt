@@ -90,23 +90,26 @@ layout.html
 <!doctype html>
 {% html lang="en" %}
     {% head %}
-    <meta charset="UTF-8">
-    <title>{% title %}</title>
-    {% require "common:static/js/jquery.js" %}
-    {% style %}
-        body { color: white;}
-    {% endstyle %}
-    {% style %}
-    console.log('hello yogurt');
-    {% endstyle %}
+        <meta charset="UTF-8">
+        <title>{% title %}</title>
+        {% require "common:static/js/jquery.js" %}
+        
+        {% style %}
+            body { color: white;}
+        {% endstyle %}
+        
+        {% style %}
+            console.log('hello yogurt');
+        {% endstyle %}
+    
     {% endhead %}
 
     {% body %}
-    <div id="wrap">
-        {% block content %}
-        This will be override.
-        {% endblock %}
-    </div>
+        <div id="wrap">
+            {% block content %}
+            This will be override.
+            {% endblock %}
+        </div>
     {% endbody %}
 {% endhtml %}
 ```
