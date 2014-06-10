@@ -86,7 +86,7 @@ todo
 
 layout.html
 
-```html
+```markup
 <!doctype html>
 {% html lang="en" %}
     {% head %}
@@ -116,7 +116,7 @@ layout.html
 
 index.html
 
-```html
+```markup
 {% extends 'layout.html' %}
 
 {% block content %}
