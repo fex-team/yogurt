@@ -124,7 +124,7 @@ index.html
 {% endblock %}
 ```
 
-### widget 分块
+### widget 模块化
 
 页面中通用且独立的小部分可以通过 widget 分离出来，方便维护。
 
@@ -149,7 +149,7 @@ page/index.html
 {% endblock %}
 ```
 
-### widget 分类
+### widget 加载模式
 
 借鉴了 BigPipe，Quickling 等思路，让 widget 可以以多种模式加载。
 
@@ -165,6 +165,18 @@ page/index.html
     {% widget "widget/header/header.html" mode="pipeline" %}
 {% endblock %}
 ```
+
+## Fis 静态资源定位
+
+集成在模板引擎中，通过使用扩展的 custom tags 便能正确的资源定位。
+
+## pagelet 管理器
+
+集成在模板引擎中，通过给 widget 设置不同的模式，自动与 pagelet manager 交互，完成功能。
+
+## model 管理器
+
+todo
 
 
 
