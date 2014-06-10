@@ -92,6 +92,13 @@ layout.html
     {% head %}
     <meta charset="UTF-8">
     <title>{% title %}</title>
+    {% require "common:static/js/jquery.js" %}
+    {% style %}
+        body { color: white;}
+    {% endstyle %}
+    {% style %}
+    console.log('hello yogurt');
+    {% endstyle %}
     {% endhead %}
 
     {% body %}
@@ -113,5 +120,7 @@ index.html
 <p>This is just an awesome page.</p>
 {% endblock %}
 ```
+
+
 
 
