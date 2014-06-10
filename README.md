@@ -34,7 +34,7 @@ todo
 ├── locales                   # 多语言
 ├── models                    # model
 │   └── ...
-│── server.js                    # server 入口
+│── server.js                 # server 入口
 ```
 
 #### 完整项目目录
@@ -49,15 +49,15 @@ todo
 │   ├── locales                   # 多语言
 │   ├── models                    # model
 │   │   └── ...
-│   │── server.js                    # server 入口
+│   │── server.js                 # server 入口
 │── UI-A
 │   ├── static 
 │   ├── views 
-│   └── config/map.json       # 静态资源表。 
+│   └── config/map.json           # 静态资源表。 
 │── UI-B
 │   ├── static 
 │   ├── views 
-│   └── config/map.json       # 静态资源表。
+│   └── config/map.json           # 静态资源表。
 ```
 
 
