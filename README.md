@@ -79,3 +79,39 @@ todo
 ├── fis-conf.js               # fis 编译配置
 └── app.js                    # server 入口
 ```
+
+## 模板扩展
+
+基于 [swig](http://paularmstrong.github.io/swig/) 扩展 html、head、body、style、script、require、uri 等标签，方便组织代码和静态资源引用，自动完成 js、css 优化输出。
+
+layout.html
+
+```html
+<!doctype html>
+{% html lang="en" %}
+    {% head %}
+    <meta charset="UTF-8">
+    <title>{% title %}</title>
+    {% endhead %}
+
+    {% body %}
+    <div id="wrap">
+        {% block content %}
+        This will be override.
+        {% endblock %}
+    </div>
+    {% endbody %}
+{% endhtml %}
+```
+
+index.html
+
+```html
+{% extends 'layout.html' %}
+
+{% block content %}
+<p>This is just an awesome page.</p>
+{% endblock %}
+```
+
+
