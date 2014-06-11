@@ -14,11 +14,11 @@ node 服务端框架与相应前端 F.I.S 集成解决方案设计文档。
     - [模板](#模板)
     - [widget 模块化](#widget-模块化)
 * [后端篇](#后端篇)
-    - [目录规范](#目录规范)
+    - [目录规范](#目录规范-1)
     - [Workflow](#workflow)
-    - [Fis 静态资源定位](#Fis-静态资源定位)
-    - [router & controllers](#router-&-controllers)
-    - [BigPipe](#BigPipe)
+    - [Fis 静态资源定位](#fis-静态资源定位)
+    - [router & controllers](#router--controllers)
+    - [BigPipe](#bigPipe)
     - [model 管理器](#model-管理器)
 
 ## 前端篇
