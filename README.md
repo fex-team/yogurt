@@ -1,17 +1,15 @@
 yogurt [ˈjəʊgət]
 ======================
 
-todo
+node 服务端框架与相应前端 F.I.S 解决方案设计文档。
 
-##  服务端处理流程图
+整体开发分两个流程，前端开发与后端开发。前端开发主要集中在 html 和 js 的编写上，所有页面和数据通过 fis 模拟协助快速开发。后端开发主要集中在模板渲染和提供数据等逻辑上。
 
-![workflow](./flow.jpg)
+采用前后端分离主要是考虑到更好的分工合作，同时通过页面与数据模拟可以大大的减少前端开发成本，达到快速开发的效果。
 
-## 目录规范
+## 前端篇
 
-整体开发分两个流程，前端开发与后端开发。前端开发主要集中在 html 和 js 的编写，所有页面和数据通过 fis 模拟快速提供。后端开发主要集中在数据获取和页面逻辑编写上。
-
-### 前端目录
+### 目录规范
 
 ```bash
 ├── page                    # 页面 tpl
@@ -21,55 +19,7 @@ todo
 ├── fis-conf.js             # fis 编译配置
 ```
 
-### 后端目录
-
-#### app 模块
-
-```bash
-├── config                    # 配置文件
-│   ├── UI-A-map.json         # 静态资源表。
-│   ├── UI-B-map.json         # 静态资源表。
-│   ├── config.json           # 默认配置
-│   └── development.json      # 开发期配置项，便于调试。
-├── controllers               # 控制器
-│   └── ...                   # routes
-├── locales                   # 多语言
-├── models                    # model
-│   └── ...
-├── public
-│   │── UI-A                  # UI-A 的所有静态资源
-│   │   └── ...
-│   └── UI-B                  # UI-B 的所有静态资源
-│       └── ...
-├── views
-│   │── UI-A                  # UI-A 的模板文件。
-│   │   └── ...
-│   └── UI-B                  # UI-B 的模板文件。
-│       └── ...
-└── server.js                 # server 入口
-```
-
-
-### 前后端一体 （！！！备份， 不采用）
-
-```bash
-├── config                    # 配置文件
-│   ├── config.json           # 默认配置
-│   └── development.json      # 开发期配置项，便于调试。
-├── controllers               # 控制器
-│   ├── development           # 支持 json
-│   └── ...                   # routes
-├── locales                   # 多语言
-├── models                    # model
-│   ├── development           # 数据模拟，允许 json 文件直接模拟 model. 
-│   └── ...
-├── public                    # 静态资源
-├── views                     # 模板
-├── fis-conf.js               # fis 编译配置
-└── app.js                    # server 入口
-```
-
-## 模板扩展
+### 模板
 
 基于 [swig](http://paularmstrong.github.io/swig/) 扩展 html、head、body、style、script、require、uri、widget 等标签，方便组织代码和静态资源引用，自动完成 js、css 优化输出。
 
@@ -77,10 +27,10 @@ layout.html
 
 ```tpl
 <!doctype html>
-{% html lang="en" %}
+{% html lang="en" framework="/static/js/mod.js" %}
     {% head %}
         <meta charset="UTF-8">
-        <title>{% title %}</title>
+        <title>{% title | escape %}</title>
         {% require "common:static/js/jquery.js" %}
         
         {% style %}
@@ -155,52 +105,66 @@ page/index.html
 {% endblock %}
 ```
 
-## Fis 静态资源定位
+## 后端篇
 
-集成在模板引擎中，通过使用扩展的 custom tags 便能正确的资源定位。
+### 目录规范
 
-## pagelet 管理器
-
-集成在模板引擎中，通过给 widget 设置不同的模式，自动与 pagelet manager 交互，完成功能。
-
-## model 管理器
-
-为了方便 widget 与 model 关联，实现简单通过配置项就能完成的能力，需要一个集中管理 models 的管理器。同时，为了更方便的控制 model 的生命周期，我们也可以通过这个管理器来维护。
-
-```javascript
-var user = ModelFactory.get('user', 'session');
-
-user.then(function(val) {
-    res.render(tpl, val);
-});
-
-user.init();
+```bash
+├── config                    # 配置文件
+│   ├── UI-A-map.json         # 静态资源表。
+│   ├── UI-B-map.json         # 静态资源表。
+│   ├── config.json           # 默认配置
+│   └── development.json      # 开发期配置项，便于调试。
+├── controllers               # 控制器
+│   └── ...                   # routes
+├── locales                   # 多语言
+├── models                    # model
+│   └── ...
+├── public
+│   │── UI-A                  # UI-A 的所有静态资源
+│   │   └── ...
+│   └── UI-B                  # UI-B 的所有静态资源
+│       └── ...
+├── views
+│   │── UI-A                  # UI-A 的模板文件。
+│   │   └── ...
+│   └── UI-B                  # UI-B 的模板文件。
+│       └── ...
+└── server.js                 # server 入口
 ```
 
-```tpl
-...
-{% widget "widget/header/header.html" mode="pipeline" model="user" scope="session" %}
-...
-```
+###  服务端处理流程图
 
-如上面 widget 将通过 `pipeline` 方式渲染。 即当框架输出完成后，自动创建名字为 `user`
- 的 model，由于 scope="session" 所以同一个 session 期只会创建一个实例。等 model 数据到位再把内容吐出来完成整个 widget 的渲染。其他渲染模式也类似。
+![workflow](./flow.jpg)
 
- scope 说明
+**中间件说明**
 
- 1. `request` 生命周期为请求期，即没有一个请求都会创建一个 model。
- 2. `session` 生命周期为 session。即来自同一个用户，短期内的所有请求只会创建一个 model
- 3. `application` 生命周期为整个应用程序的生命周期，即整个 server 从开始到结束只会创建一个 model.
+* `compress` gzip 传输内容。
+* `favicon` 其实就是一个静态文件，跟 `static` 分开是因为它可以做更长的缓存。
+* `static` 设定静态目录，处理静态文件。
+* `logger` 对 http 请求做日志记录。
+* `bodyparser` 对不同的发送方式做解析，如：form-data, multipart, json.
+* `cookie` 解析 cookie 数据，方便后续 app 使用。
+* `session` 类似于 `cookie`, 数据存储于服务端。
+* `security` 做服务端安全处理，防止入侵。
+* `Fis Source Map`  解析前端模块生成的静态资源表，帮助后续 app 定位静态资源。
+* `i18n` 多语言数据读取，帮助后续 app 或模板对多语言的支持。
+* `BigPipe` 帮助后续 app 和 view 层实现快速渲染功能。
+* `Router` 分组多种路由，集成在独立的特定文件上维护。
 
-## router
+### Fis 静态资源定位
+
+集成在模板引擎中，通过使用扩展的 custom tags 便能正确的资源定位。此功能主要依赖与前端模块生成的静态资源表。借助静态资源表，我们可以简单的实现将静态资源部署在 cdn 或者其他服务器上。
+
+### router & controllers
 
 主要起到一个组的概念，将多个路由，按照相同的前缀分类。
 
 比如原来你可能需要这么写。
 
 ```javasript
-app.get('/user/list', function(req, res, next) {
-    // todo
+app.get('/user', function(req, res, next) {
+    res.render('user/list.tpl', data);
 });
 
 app.get('/user/add', function(req, res, next) {
@@ -236,11 +200,11 @@ module.exports = function(router) {
 
     router.get('/read/:id', function(req, res, next) {
         // todo
-    });   
+    });
 };
 ```
 
-## BigPipe
+### BigPipe
 
 为了更快速的呈现页面, 可以让页面整体框架先渲染，后续再填充内容。更多请查看[widget 渲染模式](#widget 渲染模式)。
 
@@ -257,7 +221,7 @@ router.get('/', function(req, res) {
     }
 
     req.bigpipe
-        .bindSource('pageletId', function( done ) {
+        .bind('pageletId', function( done ) {
             // 此方法会在 widget 在渲染前触发。
             // widget 可能会在 body 输出完后渲染，
             // 也可能会在下次请求的时候开始渲染。
@@ -274,9 +238,32 @@ router.get('/', function(req, res) {
 });
 ```
 
+### model 管理器
 
+为了方便 widget 与 model 关联，实现简单通过配置项就能完成的能力，需要一个集中管理 models 的管理器。同时，为了更方便的控制 model 的生命周期，我们也可以通过这个管理器来维护。
 
+```javascript
+var user = ModelFactory.get('user', 'session');
 
+user.then(function(val) {
+    res.render(tpl, val);
+});
 
+user.init();
+```
 
+```tpl
+...
+{% widget "widget/header/header.html" mode="pipeline" model="user" scope="session" %}
+...
+```
 
+如上面 widget 将通过 `pipeline` 方式渲染。 即当框架输出完成后，自动创建名字为 `user`
+ 的 model，由于 scope="session" 所以同一个 session 期只会创建一个实例。等 model 数据到位再把内容吐出来完成整个 widget 的渲染。其他渲染模式也类似。
+
+ scope 说明
+
+ 1. `request` 生命周期为请求期，即没有一个请求都会创建一个 model。
+ 2. `session` 生命周期为 session。即来自同一个用户，短期内的所有请求只会创建一个 model
+ 3. `application` 生命周期为整个应用程序的生命周期，即整个 server 从开始到结束只会创建一个 model.
+ 
