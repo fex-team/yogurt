@@ -138,7 +138,7 @@ page/index.html
 {% endblock %}
 ```
 
-### widget 加载模式
+### widget 渲染模式
 
 借鉴了 BigPipe，Quickling 等思路，让 widget 可以以多种模式加载。
 
