@@ -165,7 +165,17 @@ page/index.html
 
 ## model 管理器
 
-为了方便 widget 与 model 关联，实现简单通过配置项就能完成的能力，需要一个集中管理 models 的管理器。
+为了方便 widget 与 model 关联，实现简单通过配置项就能完成的能力，需要一个集中管理 models 的管理器。同时，为了更方便的控制 model 的生命周期，我们也可以通过这个管理器来维护。
+
+```javascript
+var user = ModelFactory.get('user', 'session');
+
+user.then(function(val) {
+    res.render(tpl, val);
+});
+
+user.init();
+```
 
 ```tpl
 ...
@@ -181,6 +191,88 @@ page/index.html
  1. `request` 生命周期为请求期，即没有一个请求都会创建一个 model。
  2. `session` 生命周期为 session。即来自同一个用户，短期内的所有请求只会创建一个 model
  3. `application` 生命周期为整个应用程序的生命周期，即整个 server 从开始到结束只会创建一个 model.
+
+## router
+
+主要起到一个组的概念，将多个路由，按照相同的前缀分类。
+
+比如原来你可能需要这么写。
+
+```javasript
+app.get('/user/list', function(req, res, next) {
+    // todo
+});
+
+app.get('/user/add', function(req, res, next) {
+    // todo
+});
+
+app.get('/user/edit/:id', function(req, res, next) {
+    // todo
+});
+
+app.get('/user/read/:id', function(req, res, next) {
+    // todo
+});
+```
+
+此 router 中间件可以让你把 user 操作的一系列路由，组合写在一个 user.js 文件里面，效果与上面代码完全相同。
+
+controllers/user.js
+
+```javascript
+module.exports = function(router) {
+    router.get('/list', function(req, res, next) {
+        // todo
+    });
+
+    router.get('/add', function(req, res, next) {
+        // todo
+    });
+
+    router.get('/edit/:id', function(req, res, next) {
+        // todo
+    });
+
+    router.get('/read/:id', function(req, res, next) {
+        // todo
+    });   
+};
+```
+
+## BigPipe
+
+为了更快速的呈现代码, 可以让页面整体框架先渲染，后续再填充内容。更多请查看[widget 渲染模式](#widget 渲染模式)。
+
+其实对于页面渲染过程中，会拖慢渲染的主要是 model 层数据获取。传统的渲染模式 `res.render(tpl, data)`, 都是先把数据都准备好了才开始渲染，这样其实并没有避开用户等待。
+
+现在的方式是 `res.render()` 只准备框架必要的数据，等框架渲染完后，开始渲染 widget，在渲染之前通过事件与 controller 打交道，补充绑定 widget 的数据, 等数据 ready 再开始完成 widget 渲染。这样便能减少用户的等待时间。
+
+```javascript
+router.get('/', function(req, res) {
+   
+   var frameModel = {
+       title: 'xxxx',
+       navs: [{}, {}]
+    }
+
+    req.bigpipe
+        .bindSource('pageletId', function( done ) {
+            // 此方法会在 widget 在渲染前触发。
+            // widget 可能会在 body 输出完后渲染，
+            // 也可能会在下次请求的时候开始渲染。
+
+            var user = new User();
+        
+            user.fetch();
+
+            user.then(function( value ) {
+                done( value );
+            });
+        })
+        .render('user.tpl', frameModel);
+});
+```
 
 
 
