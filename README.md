@@ -165,7 +165,7 @@ node express 服务端处理流程与 php 处理流程有很大的区别。php �
 
 比如原来你可能需要这么写。
 
-```javasript
+```javascript
 app.get('/user', function(req, res, next) {
     res.render('user/list.tpl', data);
 });
