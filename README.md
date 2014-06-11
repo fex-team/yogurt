@@ -37,14 +37,14 @@ todo
 ├── models                    # model
 │   └── ...
 ├── public
-│   │── UI-A
+│   │── UI-A                  # UI-A 的所有静态资源
 │   │   └── ...
-│   └── UI-B
+│   └── UI-B                  # UI-B 的所有静态资源
 │       └── ...
 ├── views
-│   │── UI-A
+│   │── UI-A                  # UI-A 的模板文件。
 │   │   └── ...
-│   └── UI-B
+│   └── UI-B                  # UI-B 的模板文件。
 │       └── ...
 └── server.js                 # server 入口
 ```
@@ -165,8 +165,22 @@ page/index.html
 
 ## model 管理器
 
-todo
+为了方便 widget 与 model 关联，实现简单通过配置项就能完成的能力，需要一个集中管理 models 的管理器。
 
+```tpl
+...
+{% widget "widget/header/header.html" mode="pipeline" model="user" scope="session" %}
+...
+```
+
+如上面 widget 将通过 `pipeline` 方式渲染。 即当框架输出完成后，自动创建名字为 `user`
+ 的 model，由于 scope="session" 所以同一个 session 期只会创建一个实例。等 model 数据到位再把内容吐出来完成整个 widget 的渲染。其他渲染模式也类似。
+
+ scope 说明
+
+ 1. `request` 生命周期为请求期，即没有一个请求都会创建一个 model。
+ 2. `session` 生命周期为 session。即来自同一个用户，短期内的所有请求只会创建一个 model
+ 3. `application` 生命周期为整个应用程序的生命周期，即整个 server 从开始到结束只会创建一个 model.
 
 
 
