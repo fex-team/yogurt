@@ -84,7 +84,7 @@ index.html
 
 widget/header/header.html
 
-```tpl
+```html
 <div class="header">
     <ul>
         <li>nav 1</li>
