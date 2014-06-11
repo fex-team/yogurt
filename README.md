@@ -242,11 +242,11 @@ module.exports = function(router) {
 
 ## BigPipe
 
-为了更快速的呈现代码, 可以让页面整体框架先渲染，后续再填充内容。更多请查看[widget 渲染模式](#widget 渲染模式)。
+为了更快速的呈现页面, 可以让页面整体框架先渲染，后续再填充内容。更多请查看[widget 渲染模式](#widget 渲染模式)。
 
 其实对于页面渲染过程中，会拖慢渲染的主要是 model 层数据获取。传统的渲染模式 `res.render(tpl, data)`, 都是先把数据都准备好了才开始渲染，这样其实并没有避开用户等待。
 
-现在的方式是 `res.render()` 只准备框架必要的数据，等框架渲染完后，开始渲染 widget，在渲染之前通过事件与 controller 打交道，补充绑定 widget 的数据, 等数据 ready 再开始完成 widget 渲染。这样便能减少用户的等待时间。
+现在的方式是 `res.render()` 只准备框架必要的数据，等框架渲染完后，开始渲染 widget，在渲染之前通过 callback 与 controller 打交道，补充绑定 widget 的数据, 等数据 ready 再开始完成 widget 渲染。这样便能减少用户的等待时间。
 
 ```javascript
 router.get('/', function(req, res) {
