@@ -285,7 +285,7 @@ user.init();
 
  scope 说明
 
- 1. `request` 生命周期为请求期，即没有一个请求都会创建一个 model。
+ 1. `request` 生命周期为请求期，即每来一个请求都会创建一个 model。
  2. `session` 生命周期为 session。即来自同一个用户，短期内的所有请求只会创建一个 model
  3. `application` 生命周期为整个应用程序的生命周期，即整个 server 从开始到结束只会创建一个 model.
  
