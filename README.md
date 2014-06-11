@@ -211,9 +211,9 @@ module.exports = function(router) {
 
 为了更快速的呈现页面, 可以让页面整体框架先渲染，后续再填充内容。更多请查看[widget 渲染模式](#widget 渲染模式)。
 
-其实对于页面渲染过程中，会拖慢渲染的主要是 model 层数据获取。传统的渲染模式 `res.render(tpl, data)`, 都是先把数据都准备好了才开始渲染，这样其实并没有避开用户等待。
+其实对于页面渲染过程中，会拖慢渲染的主要是 model 层数据获取。传统的渲染模式 `res.render(tpl, data)`, 都是先把数据都准备好了才开始渲染，这样浏览器需要等待很长一段时间才能呈现页面。
 
-现在的方式是 `res.render()` 只准备框架必要的数据，等框架渲染完后，开始渲染 widget，在渲染之前通过 callback 与 controller 打交道，补充绑定 widget 的数据, 等数据 ready 再开始完成 widget 渲染。这样便能减少用户的等待时间。
+现在的方式是 `res.render()` 只准备框架必要的数据，chunk 输出框架内容，浏览器便能先呈现一个轮廓，后续接着获取 widget 数据，等数据 ready chunk 补充渲染 widget。这样便能减少用户的等待时间。
 
 ```javascript
 router.get('/', function(req, res) {
@@ -221,20 +221,23 @@ router.get('/', function(req, res) {
    var frameModel = {
        title: 'xxxx',
        navs: [{}, {}]
-    }
+    };
 
     req.bigpipe
-        .bind('pageletId', function( done ) {
-            // 此方法会在 widget 在渲染前触发。
-            // widget 可能会在 body 输出完后渲染，
-            // 也可能会在下次请求的时候开始渲染。
+
+        // 绑定 pagelet 数据提供回调。
+        .bind('pageletId', function(done) {
+            // 此方法会在 widget 渲染前触发。
+            // 而 widget 可能会在 body 输出完后开始渲染，
+            // 也可能会在下次请求的时候开始渲染，
+            // 具体根据 widget 所选择的渲染模式决定。
 
             var user = new User();
         
             user.fetch();
 
-            user.then(function( value ) {
-                done( value );
+            user.then(function(value) {
+                done(value);
             });
         })
         .render('user.tpl', frameModel);
@@ -246,7 +249,9 @@ router.get('/', function(req, res) {
 为了方便 widget 与 model 关联，实现简单通过配置项就能完成的能力，需要一个集中管理 models 的管理器。同时，为了更方便的控制 model 的生命周期，我们也可以通过这个管理器来维护。
 
 ```javascript
-var user = ModelFactory.get('user', 'session');
+var scope = 'session';
+var moduleName = 'user';
+var user = ModelFactory.get(moduleName, scope);
 
 user.then(function(val) {
     res.render(tpl, val);
