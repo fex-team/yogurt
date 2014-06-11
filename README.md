@@ -27,6 +27,8 @@ todo
 
 ```bash
 ├── config                    # 配置文件
+│   ├── UI-A-map.json         # 静态资源表。
+│   ├── UI-B-map.json         # 静态资源表。
 │   ├── config.json           # 默认配置
 │   └── development.json      # 开发期配置项，便于调试。
 ├── controllers               # 控制器
@@ -34,30 +36,17 @@ todo
 ├── locales                   # 多语言
 ├── models                    # model
 │   └── ...
-│── server.js                 # server 入口
-```
-
-#### 完整项目目录
-
-```bash
-│── app
-│   ├── config                    # 配置文件
-│   │   ├── config.json           # 默认配置
-│   │   └── development.json      # 开发期配置项，便于调试。
-│   ├── controllers               # 控制器
-│   │   └── ...                   # routes
-│   ├── locales                   # 多语言
-│   ├── models                    # model
-│   │   └── ...
-│   │── server.js                 # server 入口
-│── UI-A
-│   ├── static 
-│   ├── views 
-│   └── config/map.json           # 静态资源表。 
-│── UI-B
-│   ├── static 
-│   ├── views 
-│   └── config/map.json           # 静态资源表。
+├── public
+│   │── UI-A
+│   │   └── ...
+│   └── UI-B
+│       └── ...
+├── views
+│   │── UI-A
+│   │   └── ...
+│   └── UI-B
+│       └── ...
+└── server.js                 # server 入口
 ```
 
 
