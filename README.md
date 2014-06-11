@@ -1,11 +1,11 @@
-yogurt [ˈjəʊgət]
+yogurt [ˈjoɡət]
 ======================
 
-node 服务端框架与相应前端 F.I.S 解决方案设计文档。
+node 服务端框架与相应前端 F.I.S 集成解决方案设计文档。
 
 整体开发分两个流程，前端开发与后端开发。前端开发主要集中在 html 和 js 的编写上，所有页面和数据通过 fis 模拟协助快速开发。后端开发主要集中在模板渲染和提供数据等逻辑上。
 
-采用前后端分离主要是考虑到更好的分工合作，同时通过页面与数据模拟可以大大的减少前端开发成本，达到快速开发的效果。
+采用前后端分离主要考虑能更好的分工合作，同时通过页面与数据模拟可以大大的减少前端开发成本，达到快速开发的效果。
 
 ## 前端篇
 
@@ -31,6 +31,7 @@ layout.html
     {% head %}
         <meta charset="UTF-8">
         <title>{% title | escape %}</title>
+        {% require "common:static/css/reset.css" %}
         {% require "common:static/js/jquery.js" %}
         
         {% style %}
@@ -90,12 +91,12 @@ page/index.html
 
 ### widget 渲染模式
 
-借鉴了 BigPipe，Quickling 等思路，让 widget 可以以多种模式加载。
+借鉴了 BigPipe，Quickling 等思路，让 widget 可以以多种模式渲染。
 
 1. `sync` 默认就是此模式，直接输出。
 2. `quicking` 此类 widget 在输出时，只会输出个壳子，内容由用户自行决定通过 js，另起请求完成填充，包括静态资源加载。
 3. `async` 此类 widget 在输出时，也只会输出个壳子，但是内容在 body 输出完后，chunk 输出 js 自动填充。widget 将忽略顺序，谁先准备好，谁先输出。
-4. `pipeline` 与 `async` 基本相同，只是它会按顺序输出。
+4. `pipeline` 与 `async` 基本相同，只是它会严格按顺序输出。
 
 ```tpl
 {% extends 'layout.html' %}
@@ -134,6 +135,8 @@ page/index.html
 ```
 
 ###  服务端处理流程图
+
+node express 服务端处理流程与 php 处理流程有很大的区别。php 借助其他服务器，通过 cgi 的方式运行，在 cgi 那层已经把一些常用的功能集成好了，在 php 脚本那层直接就可以使用，如 cookie, session 和表单数据解析等等。而 node 则需要自行开起服务，同时对于 http 请求的各种处理都需要自己处理，不过没关系，有强大的社区做支持，有很多现成中间件。
 
 ![workflow](./flow.jpg)
 
