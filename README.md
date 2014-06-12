@@ -1,4 +1,4 @@
-yogurt [ˈjoɡət]
+Yogurt [ˈjoɡət]
 ======================
 
 针对后端为 [express.js](http://expressjs.com/) 的 F.I.S 前后端开发规范设计文档。
@@ -78,7 +78,7 @@ index.html
 {% endblock %}
 ```
 
-### widget 模块化
+### Widget 模块化
 
 页面中通用且独立的小部分可以通过 widget 分离出来，方便维护。
 
@@ -103,7 +103,7 @@ page/index.html
 {% endblock %}
 ```
 
-### widget 渲染模式
+### Widget 渲染模式
 
 借鉴了 BigPipe，Quickling 等思路，让 widget 可以以多种模式渲染。
 
@@ -173,7 +173,7 @@ node express 服务端处理流程与 php 处理流程有很大的区别。php �
 
 集成在模板引擎中，通过使用扩展的 custom tags 便能正确的资源定位。此功能主要依赖与前端模块生成的静态资源表。借助静态资源表，我们可以简单的实现将静态资源部署在 cdn 或者其他服务器上。
 
-### router & controllers
+### Router & Controllers
 
 主要起到一个组的概念，将多个路由，按照相同的前缀分类。
 
@@ -258,7 +258,7 @@ router.get('/', function(req, res) {
 });
 ```
 
-### model 管理器
+### Model 管理器
 
 为了方便 widget 与 model 关联，实现简单通过配置项就能完成的能力，需要一个集中管理 models 的管理器。同时，为了更方便的控制 model 的生命周期，我们也可以通过这个管理器来维护。
 
