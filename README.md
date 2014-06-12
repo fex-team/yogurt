@@ -229,7 +229,7 @@ module.exports = function(router) {
 
 其实对于页面渲染过程中，会拖慢渲染的主要是 model 层数据获取。传统的渲染模式 `res.render(tpl, data)`, 都是先把数据都准备好了才开始渲染，这样浏览器需要等待很长一段时间才能呈现页面。
 
-现在的方式是 `res.render()` 只准备框架必要的数据，chunk 输出框架内容，浏览器便能先呈现一个轮廓，后续接着获取 widget 数据，等数据 ready chunk 补充渲染 widget。这样便能减少用户的等待时间。
+现在的方式是 `res.render()` 只需准备框架必要的数据，chunk 输出框架内容，浏览器便能先呈现一个轮廓，后续接着获取 widget 数据，等数据 ready chunk 补充渲染 widget。这样便能减少用户的等待时间。
 
 ```javascript
 router.get('/', function(req, res) {
