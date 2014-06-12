@@ -19,7 +19,6 @@ Yogurt [ˈjoɡət]
     - [Fis 静态资源定位](#fis-静态资源定位)
     - [router & controllers](#router--controllers)
     - [BigPipe](#bigPipe)
-    - [model 管理器](#model-管理器)
 
 ## 前端篇
 
