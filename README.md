@@ -223,6 +223,8 @@ module.exports = function(router) {
 
 ### BigPipe
 
+![](./bigpipe.jpg)
+
 为了更快速的呈现页面, 可以让页面整体框架先渲染，后续再填充内容。更多请查看[widget 渲染模式](#widget 渲染模式)。
 
 其实对于页面渲染过程中，会拖慢渲染的主要是 model 层数据获取。传统的渲染模式 `res.render(tpl, data)`, 都是先把数据都准备好了才开始渲染，这样浏览器需要等待很长一段时间才能呈现页面。
