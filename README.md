@@ -12,12 +12,12 @@ Yogurt [ˈjoɡət]
 * [前端篇](#前端篇)
     - [目录规范](#目录规范)
     - [模板](#模板)
-    - [widget 模块化](#widget-模块化)
+    - [Widget 模块化](#widget-模块化)
 * [后端篇](#后端篇)
     - [目录规范](#目录规范-1)
     - [Workflow](#workflow)
     - [Fis 静态资源定位](#fis-静态资源定位)
-    - [router & controllers](#router--controllers)
+    - [Router & Controllers](#router--controllers)
     - [BigPipe](#bigPipe)
 
 ## 前端篇
