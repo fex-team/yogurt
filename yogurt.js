@@ -10,6 +10,8 @@ fis.config.merge({
     statics: '/public',
 
     server: {
+        type: 'node',
+        rewrite: 'index.js',
         clean: {
             exclude: "controllers/*,config/config.json,config/development.json,locales/*,models/*,server.js"
         }
