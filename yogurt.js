@@ -49,12 +49,14 @@ fis.config.merge({
             {
                 reg: /^\/widget\/(.*\.tpl)$/i,
                 isMod: true,
+                url: '${namespace}/widget/$1',
                 release: '/views/${namespace}/widget/$1'
             },
 
             {
                 reg: /^\/widget\/(.*\.(js|css))$/i,
                 isMod: true,
+                url: '/${namespace}/widget/$1',
                 release: '${statics}/${namespace}/widget/$1'
             },
 
@@ -62,6 +64,7 @@ fis.config.merge({
                 reg: /^\/page\/(.+\.tpl)$/i,
                 isMod: true,
                 release: '/views/${namespace}/$1',
+                url: '${namespace}/$1',
                 extras: {
                     isPage: true
                 }
@@ -69,6 +72,7 @@ fis.config.merge({
 
             {
                 reg: /^\/(static)\/(.*)/i,
+                url: '/${namespace}/$2',
                 release: '${statics}/${namespace}/$2'
             },
 
@@ -95,6 +99,7 @@ fis.config.merge({
 
             {
                 reg: /^.+$/,
+                url: '/${namespace}$&',
                 release: '${statics}/${namespace}$&'
             }
         ]
