@@ -13,6 +13,7 @@ Yogurt [ˈjoɡət]
     - [目录规范](#目录规范)
     - [模板](#模板)
     - [Widget 模块化](#widget-模块化)
+    - [安装与使用](#安装与使用)
 * [后端篇](#后端篇)
     - [目录规范](#目录规范-1)
     - [Workflow](#workflow)
@@ -118,6 +119,16 @@ page/index.html
     {% widget "widget/header/header.html" mode="pipeline" %}
 {% endblock %}
 ```
+
+### 安装与使用
+
+目前只能支持了编译功能，其他功能还在开发中。
+
+```bash
+$ npm install yogurt
+$ yogurt release -d ../yog-app
+```
+
 
 ## 后端篇
 
