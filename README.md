@@ -249,24 +249,23 @@ router.get('/', function(req, res) {
        navs: [{}, {}]
     };
 
-    req.bigpipe
+    // 绑定 pagelet 数据提供回调。
+    req.bigpipe.bind('pageletId', function(done) {
+        // 此方法会在 widget 渲染前触发。
+        // 而 widget 可能会在 body 输出完后开始渲染，
+        // 也可能会在下次请求的时候开始渲染，
+        // 具体根据 widget 所选择的渲染模式决定。
 
-        // 绑定 pagelet 数据提供回调。
-        .bind('pageletId', function(done) {
-            // 此方法会在 widget 渲染前触发。
-            // 而 widget 可能会在 body 输出完后开始渲染，
-            // 也可能会在下次请求的时候开始渲染，
-            // 具体根据 widget 所选择的渲染模式决定。
+        var user = new User();
+    
+        user.fetch();
 
-            var user = new User();
-        
-            user.fetch();
-
-            user.then(function(value) {
-                done(value);
-            });
-        })
-        .render('user.tpl', frameModel);
+        user.then(function(value) {
+            done(value);
+        });
+    });
+    
+    req.render('user.tpl', frameModel);
 });
 ```
 除了在 controller 中关联数据提供者外，还可在模板层，通过配置与 model 自动关联。
