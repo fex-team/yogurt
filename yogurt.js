@@ -90,7 +90,7 @@ fis.config.merge({
             },
 
             {
-                reg: "build.sh",
+                reg: "**.sh",
                 release: false
             },
 

@@ -1,6 +1,6 @@
 {
   "name": "yogurt",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Front End Integrated Solution for node express.",
   "main": "yogurt.js",
   "bin": {
@@ -30,6 +30,7 @@
     "fis-parser-less": "0.0.9",
     "yogurt-preprocessor-extlang": "0.0.2",
     "yogurt-postprocessor-require-async": "0.0.1",
+    "yogurt-command-server": "0.1.0",
     "fis-parser-bdtmpl": "0.0.3",
     "fis-postprocessor-jswrapper": "0.0.8"
   }
