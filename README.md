@@ -58,7 +58,7 @@ yogurt server start
 
 ### page 目录
 
-所有页面级别的模板文件，放在此目录。此tpl 可以直接在浏览器中预览。比如 page/index.tpl 可以通过 http://127.0.0.1:8080/{{ projectname }}/page/index 访问。 其中 {{ projectname }} 为此项目的名称。
+所有页面级别的模板文件，放在此目录。此tpl 可以直接在浏览器中预览。比如 page/index.tpl 可以通过 http://127.0.0.1:8080/{{ namespace }}/page/index 访问。 其中 {{ namespace }} 为此项目的名称。
 
 需要强调的的是，模板引擎采用的是 [swig](http://paularmstrong.github.io/swig/), 可以采用模板继承机制来实现模板复用。
 
