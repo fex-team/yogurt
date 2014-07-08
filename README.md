@@ -16,6 +16,7 @@ yogurt [ˈjoɡət]
     - [fis-conf.js](#fis-confjs)
     - [server.conf](#serverconf)
 * [BigPipe](#bigpipe)
+* [后端结合](#后端结合)
 
 ## 特点
 
@@ -302,4 +303,23 @@ module.exports = function(req, res, setData) {
     });
 
 }
+```
+
+要让 bigpipe 正常运行，需要前端引入 [bigpipe.js](https://github.com/fex-team/yog-bigpipe/blob/master/scripts/bigpipe.js), 另外 pagelet 为 `quickling` 模式，是不会自动加载的，需要用户主动去调用 BigPipe.load 方法，才会加载并渲染。
+
+更多信息请查看 [yog-bigpipe](https://github.com/fex-team/yog-bigpipe);
+
+## 后端结合
+
+yogurt 负责前端部分的工作，将会产出以下文件。后端只需提供 controller 和 model, controller 中把 model 与 tpl 关联，然后选择渲染模板文件。 关于后端框架部分，请查看 [yog](https://github.com/fex-team/yog)。
+
+```
+├── config
+│   └── example-map.json
+├── public
+│   └── example
+│       ... 更多静态资源文件
+└── views
+    └── example
+        ... 更多模板文件
 ```
