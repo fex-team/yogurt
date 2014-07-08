@@ -21,9 +21,10 @@ yogurt [ˈjoɡət]
 ├── widget                  # 各类组件
 ├── test                    # 数据与页面模拟目录
 ├── fis-conf.js             # fis 编译配置
+├── server.conf             # 测试页面转法规则配置文件
 ```
 
-### page
+### page 目录
 
 所有页面级别的模板文件，放在此目录。此tpl 可以直接在浏览器中预览。比如 page/index.tpl 可以通过 http://127.0.0.1:8080/{{ projectname }}/page/index 访问。 其中 {{ projectname }} 为此项目的名称。
 
@@ -88,3 +89,119 @@ index.tpl
     This is content!
 {% endblock %}
 ```
+
+### static 目录
+
+用来存放所有静态资源文件，css, js, images 等等。如：
+
+```
+├── css
+│   ├── bootstrap-theme.css
+│   ├── bootstrap.css
+│   └── style.css
+├── fonts
+│   ├── glyphicons-halflings-regular.eot
+│   ├── glyphicons-halflings-regular.svg
+│   ├── glyphicons-halflings-regular.ttf
+│   └── glyphicons-halflings-regular.woff
+└── js
+    ├── bigpipe.js
+    ├── bootstrap.js
+    ├── jquery-1.10.2.js
+    └── mod.js
+```
+
+### widget 目录
+
+用来存放各类组件代码。组件分成3类。
+
+1. 模板类：包含 tpl, 可以选择性的添加 js 和 css 文件，同名的 js 和 css 会被自动加载。
+
+  模板类文件，可以在模板中通过 widget 标签引用。如
+
+  ```tpl
+  {% widget "example:widget/pagelets/jumbotron/jumbotron.tpl" %}
+  ```
+2. js 类： 主要包含 js 文件，放在此目录下的文件一般都会自动被 amd define 包裹，可选择性的添加同名 css 文件，会自动被引用。
+
+  此类组件，可以在 tpl 或者 js 中通过 require 标签引用。
+
+  ```tpl
+  {% require('example:widget/lib/uploader/uploader.js') %}
+
+  <script>
+  var uploader = require('example:widget/lib/uploader/uploader.js');
+
+  uploader.init();
+  </script>
+  ```
+3. 纯 css 类：只是包含 css 文件。比如 compass. 同样也是可以通过 require 标签引用。
+
+### test 目录。
+
+用来存放测试数据和测试脚本。
+
+#### 测试数据。
+
+在你本地预览 page 目录下的 tpl 的时候，会自动在此目录下找同名的 json 文件，并将数据与之关联。
+
+如 http://127.0.0.1:8080/example/page/index 预览的是 example 模块下，page/index.tpl 文件。如果 test/page/index.json 文件存在，则此 json 的里面的所有数据都可以在 tpl 里面使用到。
+
+另外：此目录下还可存放其他文件，搭配 [server.conf](#server.conf) 配置，目录各类线上页面。
+
+比如 test/data.json 文件，想通过 http://127.0.0.1:8080/testjson 页面可以访问到。只需要在 [server.conf](#server.conf) 里面配置如下内容。
+
+```
+rewrite \/testjson$ /test/example/data.json
+```
+
+#### 测试脚本
+
+在 test 目录下的 js，也可以像 jsp, php 一样，写些动态的页面。如：
+
+/test/ajaxResponse.js
+
+```javascript
+module.exports = function(req, res, next) {
+    res.write('Hello world');
+
+    res.setHeader('xxxx', 'xxx');
+
+    res.end('The time is ' + Date.now());
+};
+```
+
+配合 [server.conf](#server.conf) 可以用来模拟线上的 ajax 响应页面。
+
+```
+rewrite \/ajax$ /test/example/ajax.js
+```
+
+这样当你请求 http://127.0.0.1:8080/ajax 页面的时候，就会自动执行这个脚本 js.
+
+### fis-conf.js 
+
+编译配置文件，详情请查看[配置 API](http://fis.baidu.com/docs/api/fis-conf.html)。
+
+### server.conf
+
+支持 rewrite 和 redirect 两条指令。语法非常简单。
+
+```
+指令名称  正则  目标地址
+```
+
+如：
+
+```
+# 首页
+rewrite \/$ /example/page/index
+
+# json 文件
+rewrite \/json /example/data.json
+
+# 自定义页面。
+rewrite \/ajax /example/ajax.js
+```
+
+非 rewrite, redirect 打头的行，都被认为是注释。
