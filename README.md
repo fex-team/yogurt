@@ -29,7 +29,7 @@ yogurt [ˈjoɡət]
 
 如果还没有安装 [node](http://nodejs.org) 请先安装 [node](http://nodejs.org).
 
-```
+```bash
 # 安装 yogurt 到全局
 npm install -g yogurt
 
@@ -179,6 +179,20 @@ index.tpl
 
 如 http://127.0.0.1:8080/example/page/index 预览的是 example 模块下，page/index.tpl 文件。如果 test/page/index.json 文件存在，则此 json 的里面的所有数据都可以在 tpl 里面使用到。
 
+同时，除了管理同名的 json 文件外，还会关联 test 目录下同名的 js 文件，在 js 中可以动态的添加数据。
+
+/test/page/index.js
+
+```javascript
+module.exports = function(req, res, setData) {
+    var origin = res.locals || {};
+
+    setData({
+        title: 'Overided ' + origin.title,
+    });
+};
+```
+
 另外：此目录下还可存放其他文件，搭配 [server.conf](#server.conf) 配置，目录各类线上页面。
 
 比如 test/data.json 文件，想通过 http://127.0.0.1:8080/testjson 页面可以访问到。只需要在 [server.conf](#server.conf) 里面配置如下内容。
@@ -217,13 +231,15 @@ rewrite \/ajax$ /test/example/ajax.js
 
 ### server.conf
 
-支持 rewrite 和 redirect 两条指令。语法非常简单。
+用来配置页面转发，支持 rewrite 和 redirect 两条指令，此转发功能只有在本地预览中才有效。
+
+语法非常简单。
 
 ```
 指令名称  正则  目标地址
 ```
 
-如：
+栗子。
 
 ```
 # 首页
@@ -240,4 +256,50 @@ rewrite \/ajax /example/ajax.js
 
 ## BigPipe
 
+采用 bigpipe 方案，允许你在渲染页面的时候，提前将框架输出，后续再把耗时的 pagelet 通过 chunk 方式输出到页面，以加速网页渲染。
 
+目前此机制已集成在 yogurt 中，通过给 widget 设置不同的模式便能自动启动。
+
+1. `sync` 默认就是此模式，直接输出。
+2. `quicking` 此类 widget 在输出时，只会输出个壳子，内容由用户自行决定通过 js，另起请求完成填充，包括静态资源加载。
+3. `async` 此类 widget 在输出时，也只会输出个壳子，但是内容在 body 输出完后，chunk 输出 js 自动填充。widget 将忽略顺序，谁先准备好，谁先输出。
+4. `pipeline` 与 `async` 基本相同，只是它会严格按顺序输出。
+
+```tpl
+{% extends 'layout.html' %}
+
+{% block content %}
+    {% widget "widget/header/header.html" mode="pipeline" id="header" %}
+{% endblock %}
+```
+
+后端的 controller 中可以通过 `res.bigpipe.bind('pageletId', function() {})` 给页面中 pagelet 延时绑定数据。
+
+在前端模拟环境里面，则可以在通过在模拟数据的 js 文件中，通过设置 onPagelet 事件，延时给 pagelet 绑定数据。
+
+test/page/index.js
+
+```javascript
+module.exports = function(req, res, setData) {
+    
+    setData({
+        
+        onPagelet: function(id, cb) {
+
+            // id 为 pagelet 的 id
+
+            // 模拟异步获取数据。
+            setTimeout(function() {
+                
+                cb(null, {
+                    title: id,
+                    content: 'Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.'
+                });
+
+                // 随机延时时间
+            }, 2000 * Math.random());
+        }
+    });
+
+}
+```
