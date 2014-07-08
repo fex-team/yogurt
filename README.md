@@ -13,8 +13,8 @@ yogurt [ˈjoɡət]
     - [page 目录](#page-目录)
     - [static 目录](#static-目录)
     - [test 目录](#test-目录)
-    - [fis-conf.js](#fis-conf.js)
-    - [server.conf](#server.conf)
+    - [fis-conf.js](#fis-confjs)
+    - [server.conf](#serverconf)
 * [BigPipe](#bigpipe)
 
 ## 特点
