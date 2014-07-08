@@ -5,6 +5,18 @@ yogurt [ˈjoɡət]
 
 在阅读此文档之前，希望你最好对 [fis](http://fis.baidu.com) 有一定的了解。此工具主要负责前端编译与环境模拟，让你更专注、更快速地开发前端部分，关于后端 express 框架部分，请查看 [yog](https://github.com/fex-team/yog)。
 
+## 目录
+
+* [特点](#特点)
+* [快速开始](#快速开始)
+* [目录规范](#目录规范)
+    - [page 目录](#page 目录)
+    - [static 目录](#static 目录)
+    - [test 目录](#test 目录)
+    - [fis-conf.js](#fis-conf.js)
+    - [server.conf](#server.conf)
+* [BigPipe](#bigpipe)
+
 ## 特点
 
 * 扩展 [swig](http://paularmstrong.github.io/swig/) 模板引擎，提供易用的 `html`、`head`、`body`、`widget`、`script`、`style` 等等标签。基于这些标签后端可以自动完成对页面的性能优化。
@@ -12,6 +24,26 @@ yogurt [ˈjoɡət]
 * 提供便利的环境、数据和页面模拟。tpl 自动与 json 数据文件关联，本地就能预览线上效果。
 * 此工具负责生成 tpl 和关联的静态资源。后端只需关注页面逻辑，数据获取以及渲染模板即可，无需关心前端领域。
 
+
+## 快速开始
+
+如果还没有安装 [node](http://nodejs.org) 请先安装 [node](http://nodejs.org).
+
+```
+# 安装 yogurt 到全局
+npm install -g yogurt
+
+# 安装 lights 如果你还没安装过。
+npm install -g lights
+
+# 下载 demo.
+lights install yogurt-demo
+
+# 进入 yogurt-demo 目录， release 后就可以预览了。
+cd yogurt-demo
+yogurt release
+yogurt server start
+```
 
 ## 目录规范
 
@@ -205,3 +237,7 @@ rewrite \/ajax /example/ajax.js
 ```
 
 非 rewrite, redirect 打头的行，都被认为是注释。
+
+## BigPipe
+
+
