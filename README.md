@@ -1,6 +1,8 @@
 yogurt [ˈjoɡət]
 ======================
 
+# 已停止更新，请移步至[下一个版本 yog2](https://github.com/fex-team/yog2)
+
 基于 [fis](http://fis.baidu.com) 扩展针对服务端为 [express.js](http://expressjs.com/) 的前端集成解决方案。
 
 在阅读此文档之前，希望你最好对 [fis](http://fis.baidu.com) 有一定的了解。此工具主要负责前端编译与环境模拟，让你更专注、更快速地开发前端部分，关于后端 express 框架部分，请查看 [yog](https://github.com/fex-team/yog)。
