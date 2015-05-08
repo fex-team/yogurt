@@ -25,14 +25,12 @@
   },
   "homepage": "https://github.com/fex-team/yogurt",
   "dependencies": {
-    "fis": "1.9.11",
+    "fis": "1.9.18",
     "fis-parser-po": "0.0.1",
     "fis-parser-less": "0.1.2",
     "yogurt-preprocessor-extlang": "0.0.2",
     "yogurt-postprocessor-require-async": "0.0.1",
     "yogurt-command-server": "0.1.1",
-    "fis-parser-bdtmpl": "0.0.3",
-    "fis-postprocessor-jswrapper": "0.0.8",
-    "fis-parser-sass": "0.3.5"
+    "fis-postprocessor-jswrapper": "0.0.8"
   }
 }
