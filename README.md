@@ -1,7 +1,7 @@
 yogurt [ˈjoɡət]
 ======================
 
-# 已停止更新，请移步至[下一个版本 yog2](https://github.com/fex-team/yog2)
+# 已停止更新，请移步至[yog2](https://github.com/fex-team/yog2)
 
 基于 [fis](http://fis.baidu.com) 扩展针对服务端为 [express.js](http://expressjs.com/) 的前端集成解决方案。
 
