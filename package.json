@@ -1,6 +1,6 @@
 {
   "name": "yogurt",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "Front End Integrated Solution for node express.",
   "main": "yogurt.js",
   "bin": {
